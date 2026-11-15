@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Каталог модов{% endblock %}
+{% block content %}
+<div class="catalog-layout">
+    <aside class="filters">
+        <div class="filter-title">Фильтры <a href="{{ url_for('mods') }}">Сбросить</a></div>
+        <form method="get">
+            <input class="search" type="text" name="search" value="{{ search }}" placeholder="Поиск по названию">
+            <h3>Версия Minecraft</h3>
+            {% for v in versions %}
+            <label><input type="radio" name="version" value="{{ v.version }}" {% if selected_version == v.version %}checked{% endif %}> {{ v.version }}</label>
+            {% endfor %}
+            <h3>Категория</h3>
+            {% for c in categories %}
+            <label><input type="radio" name="category" value="{{ c.name }}" {% if selected_category == c.name %}checked{% endif %}> {{ c.name }}</label>
+            {% endfor %}
+            <button class="green-btn" type="submit">Применить</button>
+        </form>
+    </aside>
+
+    <main class="catalog-main">
+        <div class="catalog-header">
+            <span>Найдено модов: <b>{{ mods|length }}</b></span>
+            <select onchange="if(this.value) location.href=this.value">
+                <option value="">Сортировка:</option>
+                <option value="{{ url_for('mods') }}">По популярности</option>
+            </select>
+        </div>
+        <div class="cards">
+            {% for mod in mods %}
+            <article class="mod-card">
+                <div class="mod-image">{% if mod.image_url %}<img src="{{ mod.image_url }}" alt="{{ mod.title }}">{% else %}▧{% endif %}</div>
+                <h3>{{ mod.title }}</h3>
+                {% if mod.verified %}<div class="verified">● Мод проверен</div>{% endif %}
+                <div class="meta">Версия {{ mod.version }} <span>⭐ {{ mod.rating }} (0)</span></div>
+                <p>{{ mod.short_description }}</p>
+                <a class="green-btn" href="{{ url_for('mod_detail', slug=mod.slug) }}">Скачать / Подробнее</a>
+            </article>
+            {% else %}
+            <div class="empty">По заданным фильтрам моды не найдены.</div>
+            {% endfor %}
+        </div>
+    </main>
+</div>
+{% endblock %}

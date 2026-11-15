@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Добавить мод{% endblock %}
+{% block content %}
+<div class="form-card wide">
+    <h1>Добавить свой мод</h1>
+    <form method="post">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <label>Название<input name="title" required></label>
+        <label>Короткое описание<input name="short_description"></label>
+        <label>Версия Minecraft<input name="version" placeholder="например, 1.20.x" required></label>
+        <label>Ссылка на изображение<input name="image_url" placeholder="https://..."></label>
+        <label>Полное описание<textarea name="description" rows="7" required></textarea></label>
+        <div class="check-grid">
+            {% for c in categories %}
+            <label><input type="checkbox" name="categories" value="{{ c.id }}"> {{ c.name }}</label>
+            {% endfor %}
+        </div>
+        <button class="green-btn" type="submit">Добавить мод</button>
+    </form>
+</div>
+{% endblock %}

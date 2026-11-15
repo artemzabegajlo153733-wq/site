@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}{{ mod.title }} — Minecraft Mods{% endblock %}
+{% block content %}
+<section class="detail">
+    <div class="detail-image">{% if mod.image_url %}<img src="{{ mod.image_url }}" alt="{{ mod.title }}">{% else %}▧{% endif %}</div>
+    <div class="detail-info">
+        <h1>{{ mod.title }}</h1>
+        {% if mod.verified %}<div class="verified">● Мод проверен</div>{% endif %}
+        <p class="lead">{{ mod.short_description }}</p>
+        <div class="stats">
+            <span>Версия: <b>{{ mod.version }}</b></span>
+            <span>Рейтинг: ⭐ {{ mod.rating }}</span>
+            <span>Скачиваний: {{ mod.downloads }}</span>
+            <span>Автор: {{ mod.author or 'Не указан' }}</span>
+        </div>
+        <div class="tags">
+            {% for c in categories %}<span>{{ c.name }}</span>{% endfor %}
+        </div>
+        <form method="post" action="{{ url_for('download_mod', mod_id=mod.id) }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button class="green-btn download" type="submit">⬇ Скачать мод</button>
+        </form>
+    </div>
+</section>
+<section class="text-panel">
+    <h2>Описание</h2>
+    <p>{{ mod.description }}</p>
+</section>
+{% endblock %}

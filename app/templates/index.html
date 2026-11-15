@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}Моды для Майнкрафт{% endblock %}
+{% block content %}
+<section class="hero-grid">
+    <div class="intro">
+        <h1>Моды для Майнкрафт</h1>
+        <p>Здесь ты можешь бесплатно скачать самые новые и популярные моды для майнкрафт, в том числе с переводом на русском языке. Моды на майнкрафт сделают вашу игру намного интереснее.</p>
+        <p>На сайте есть моды на мобов и монстров, новые измерения, технологии, мебель, оружие, генерацию мира и оптимизацию.</p>
+    </div>
+    <aside class="side-menu">
+        <h3>Меню</h3>
+        <a href="{{ url_for('mods') }}">🔥 Популярные моды</a>
+        <a href="{{ url_for('mods') }}">⭐ Новые моды</a>
+        <a href="{{ url_for('mods') }}">🍃 Для новичков</a>
+        <a href="{{ url_for('news') }}">📰 Скоро выйдут</a>
+    </aside>
+</section>
+
+<section class="content-shell">
+    <div class="catalog-header">
+        <div><b>Популярные моды</b><span class="muted"> — найдено: {{ mods|length }}</span></div>
+        <a class="green-btn small" href="{{ url_for('mods') }}">Все моды</a>
+    </div>
+    <div class="cards">
+        {% for mod in mods %}
+        <article class="mod-card">
+            <div class="mod-image">{% if mod.image_url %}<img src="{{ mod.image_url }}" alt="{{ mod.title }}">{% else %}▧{% endif %}</div>
+            <h3>{{ mod.title }}</h3>
+            <div class="verified">● Мод проверен</div>
+            <div class="meta">Версия {{ mod.version }} <span>⭐ {{ mod.rating }}</span></div>
+            <p>{{ mod.short_description }}</p>
+            <a class="green-btn" href="{{ url_for('mod_detail', slug=mod.slug) }}">Подробнее</a>
+        </article>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="dino-game" aria-label="Мини-игра Динозаврик">
+    <div class="dino-heading">
+        <div>
+            <span class="dino-kicker">СЕКРЕТНЫЙ УРОВЕНЬ</span>
+            <h2>Динозаврик</h2>
+            <p>Прыгай через кактусы и набирай очки!</p>
+        </div>
+        <div class="dino-scoreboard">
+            <div>СЧЁТ: <span id="dino-score">0</span></div>
+            <div>РЕКОРД: <span id="dino-best">0</span></div>
+        </div>
+    </div>
+
+    <div class="dino-canvas-wrap">
+        <canvas id="dino-canvas" width="900" height="230"
+                aria-label="Игровое поле с динозавриком и кактусами"></canvas>
+
+        <div class="dino-game-over" id="dino-game-over" hidden>
+            <h3>GAME OVER</h3>
+            <p>Твой результат: <span id="dino-final-score">0</span></p>
+            <button type="button" id="dino-restart">Играть снова</button>
+        </div>
+    </div>
+
+    <div class="dino-controls">
+        <button type="button" id="dino-jump">ПРЫЖОК ↑</button>
+        <span>Пробел / ↑ / клик по игровому полю — прыжок</span>
+    </div>
+</section>
+
+<script src="{{ url_for('static', filename='dino.js') }}" defer></script>
+{% endblock %}

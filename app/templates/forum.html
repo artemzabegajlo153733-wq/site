@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Форум{% endblock %}
+{% block content %}
+<section class="text-panel">
+    <h1>Форум</h1>
+    <p class="muted">Раздел для обсуждения модов, сборок и установки.</p>
+    {% for topic in topics %}
+    <div class="topic">
+        <h3>{{ topic.title }}</h3>
+        <p>{{ topic.message }}</p>
+        <small>Автор: {{ topic.username }} · {{ topic.created_at.strftime('%d.%m.%Y') }}</small>
+    </div>
+    {% else %}
+    <div class="empty">Пока нет тем.</div>
+    {% endfor %}
+</section>
+{% endblock %}
